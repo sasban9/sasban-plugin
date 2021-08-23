@@ -3,9 +3,11 @@
  * @package SasbanPlugin
  */
 
+namespace Inc;
+
 class Deactivate
 {
-    public static function deactivateThis() {
+    public static function deactivate() {
         flush_rewrite_rules();
     }
 }

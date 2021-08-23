@@ -1,0 +1,17 @@
+{
+    "name": "saswata/sasban-plugin",
+    "description": "Advanced plugin example from Sasban",
+    "type": "project",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "sasban",
+            "email": "azure.saswata@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {"Inc\\": "./inc"}
+    }
+}

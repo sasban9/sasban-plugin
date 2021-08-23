@@ -16,6 +16,14 @@ Text Domain: sasban-plugin
 
 defined( 'ABSPATH' ) or die( 'Hey, you cant access this file, you silly human!' );
 
+if( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
+    require_once dirname( __FILE__ ) . '/vendor/autoload.php';
+}
+
+use Inc\Activate;
+use Inc\Deactivate;
+
+
 if ( !class_exists( 'SasbanPlugin' )) {
 
     class SasbanPlugin 
@@ -63,6 +71,14 @@ if ( !class_exists( 'SasbanPlugin' )) {
             // enqueue all style and script
             wp_enqueue_style( 'mypluginstyle', plugins_url( '/assets/mystyle.css', __FILE__ ) );
             wp_enqueue_script( 'mypluginscript', plugins_url( '/assets/myscript.js', __FILE__ ) );
+        }
+
+        function activate() {
+            Activate::activate();
+        }
+
+        function deactivate() {
+            Deactivate::deactivate();
         }
     }
 
