@@ -20,9 +20,35 @@ if ( !class_exists( 'SasbanPlugin' )) {
 
     class SasbanPlugin 
     {
+        public $plugin;
+
+        function __construct() {
+            $this->plugin = plugin_basename( __FILE__ );
+        }
         public function register() {
-            add_action( 'admin_enqueue_scripts', array( 'SasbanPlugin', 'enqueue' ) );
+            add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
             # add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
+
+            add_action( 'admin_menu', array( $this, 'add_admin_pages' ) );
+
+            add_filter( "plugin_action_links_$this->plugin", array( $this, 'settings_link' ) );
+        }
+
+        public function settings_link( $links ) {
+            // add custom settings link
+            $settings_link = '<a href="admin.php?page=sasban_plugin">Settings</a>';
+            array_push( $links, $settings_link );
+            $settings_link = '<a href="random.php?page=sasban_plugin">More</a>';
+            array_push( $links, $settings_link );
+            return $links;
+        }
+
+        public function add_admin_pages() {
+            add_menu_page( 'Sasban Plugin', 'Sasban', 'manage_options', 'sasban_plugin', array( $this, 'admin_index' ), 'dashicons-airplane', 110 );
+        }
+
+        public function admin_index() {
+            require_once plugin_dir_path( __FILE__ ) . 'templates/admin.php';
         }
         
         protected function create_post_type() {
@@ -39,15 +65,17 @@ if ( !class_exists( 'SasbanPlugin' )) {
             wp_enqueue_script( 'mypluginscript', plugins_url( '/assets/myscript.js', __FILE__ ) );
         }
     }
-    
-    // $sasbanPlugin = new SasbanPlugin();
-    // $sasbanPlugin->register();
+
+    $sasbanPlugin = new SasbanPlugin();
+    $sasbanPlugin->register();
 
     // activation
-    require_once plugin_dir_path( __FILE__ ) . 'inc/Activate.php';
-    register_activation_hook( __FILE__, array( 'Activate' , 'activateThis' ) );
+    // require_once plugin_dir_path( __FILE__ ) . 'inc/Activate.php';
+    // register_activation_hook( __FILE__, array( 'Activate' , 'activateThis' ) );
+    register_activation_hook( __FILE__, array( $sasbanPlugin , 'activate' ) );
 
     // deactivation
-    require_once plugin_dir_path( __FILE__ ) . 'inc/Deactivate.php';
-    register_deactivation_hook( __FILE__, array( 'Deactivate' , 'deactivateThis' ) );
+    // require_once plugin_dir_path( __FILE__ ) . 'inc/Deactivate.php';
+    // register_deactivation_hook( __FILE__, array( 'Deactivate' , 'deactivateThis' ) );
+    register_deactivation_hook( __FILE__, array( $sasbanPlugin , 'deactivate' ) );
 }
