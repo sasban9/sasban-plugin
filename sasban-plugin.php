@@ -14,13 +14,21 @@ License: GPLv2 or later
 Text Domain: sasban-plugin 
 */
 
-if ( !defined( 'ABSPATH' ) ) {
-    die;
-}
-
 defined( 'ABSPATH' ) or die( 'Hey, you cant access this file, you silly human!' );
 
-if( !function_exists( 'add_action' )) {
-    'Hey, you can\'t access this file, you silly human!';
-    exit;
+class SasbanPlugin 
+{
+    function __construct(string $string) {
+        echo $string . '<br>';
+    }
 }
+
+if (class_exists( 'SasbanPlugin' )) {
+    $sasbanPlugin = new SasbanPlugin( '======================Sasban Plugin initialized !' );
+}
+
+function customFunction($arg) {
+    echo $arg;
+}
+
+customFunction('======================This is my argument. please echo it.');
