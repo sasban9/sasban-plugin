@@ -20,21 +20,30 @@ class SasbanPlugin
 {
     function __construct(string $string) {
         #echo $string . '<br>';
+        add_action( 'init', [ $this, 'custom_post_type' ] );
     }
 
     function activate() {
         # generate a CPT
+        $this->custom_post_type();
         # flush rewrite rules
+        flush_rewrite_rules();
     }
 
     function deactivate() {
         # flush rewrite rules
+        flush_rewrite_rules();
     }
 
     function uninstall() {
         # delete CPT
         # delete all plugin data from DB
     }
+
+    function custom_post_type() {
+        register_post_type( 'book', [ 'label' => 'Books', 'public' => true ] );
+    }
+
 }
 
 if (class_exists( 'SasbanPlugin' )) {
@@ -49,9 +58,3 @@ if (class_exists( 'SasbanPlugin' )) {
     //uninstall
 
 }
-
-function customFunction($arg) {
-    echo $arg;
-}
-
-customFunction('======================This is my argument. please echo it.');
