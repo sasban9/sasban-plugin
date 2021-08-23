@@ -35,11 +35,6 @@ class SasbanPlugin
         flush_rewrite_rules();
     }
 
-    function uninstall() {
-        # delete CPT
-        # delete all plugin data from DB
-    }
-
     function custom_post_type() {
         register_post_type( 'book', [ 'label' => 'Books', 'public' => true ] );
     }
@@ -54,7 +49,4 @@ if (class_exists( 'SasbanPlugin' )) {
 
     // deactivation
     register_deactivation_hook( __FILE__, array( $sasbanPlugin, 'deactivate' ) );
-
-    //uninstall
-
 }
