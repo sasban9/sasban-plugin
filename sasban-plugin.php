@@ -19,12 +19,35 @@ defined( 'ABSPATH' ) or die( 'Hey, you cant access this file, you silly human!' 
 class SasbanPlugin 
 {
     function __construct(string $string) {
-        echo $string . '<br>';
+        #echo $string . '<br>';
+    }
+
+    function activate() {
+        # generate a CPT
+        # flush rewrite rules
+    }
+
+    function deactivate() {
+        # flush rewrite rules
+    }
+
+    function uninstall() {
+        # delete CPT
+        # delete all plugin data from DB
     }
 }
 
 if (class_exists( 'SasbanPlugin' )) {
     $sasbanPlugin = new SasbanPlugin( '======================Sasban Plugin initialized !' );
+
+    // activation
+    register_activation_hook( __FILE__, array( $sasbanPlugin, 'activate' ) );
+
+    // deactivation
+    register_deactivation_hook( __FILE__, array( $sasbanPlugin, 'deactivate' ) );
+
+    //uninstall
+
 }
 
 function customFunction($arg) {
