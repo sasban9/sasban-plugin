@@ -18,9 +18,13 @@ defined( 'ABSPATH' ) or die( 'Hey, you cant access this file, you silly human!' 
 
 class SasbanPlugin 
 {
-    function __construct(string $string) {
-        #echo $string . '<br>';
+    function __construct() {
         add_action( 'init', [ $this, 'custom_post_type' ] );
+    }
+
+    function register() {
+        add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
+        # add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
     }
 
     function activate() {
@@ -39,10 +43,16 @@ class SasbanPlugin
         register_post_type( 'book', [ 'label' => 'Books', 'public' => true ] );
     }
 
+    function enqueue() {
+        // enqueue all style and script
+        wp_enqueue_style( 'mypluginstyle', plugins_url( '/assets/mystyle.css', __FILE__ ) );
+        wp_enqueue_script( 'mypluginscript', plugins_url( '/assets/myscript.js', __FILE__ ) );
+    }
 }
 
 if (class_exists( 'SasbanPlugin' )) {
-    $sasbanPlugin = new SasbanPlugin( '======================Sasban Plugin initialized !' );
+    $sasbanPlugin = new SasbanPlugin();
+    $sasbanPlugin->register();
 
     // activation
     register_activation_hook( __FILE__, array( $sasbanPlugin, 'activate' ) );
