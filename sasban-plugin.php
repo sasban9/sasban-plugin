@@ -16,47 +16,38 @@ Text Domain: sasban-plugin
 
 defined( 'ABSPATH' ) or die( 'Hey, you cant access this file, you silly human!' );
 
-class SasbanPlugin 
-{
-    function __construct() {
-        add_action( 'init', [ $this, 'custom_post_type' ] );
-    }
+if ( !class_exists( 'SasbanPlugin' )) {
 
-    function register() {
-        add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
-        # add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
-    }
+    class SasbanPlugin 
+    {
+        public function register() {
+            add_action( 'admin_enqueue_scripts', array( 'SasbanPlugin', 'enqueue' ) );
+            # add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
+        }
+        
+        protected function create_post_type() {
+            add_action( 'init', [ $this, 'custom_post_type' ] );
+        }
 
-    function activate() {
-        # generate a CPT
-        $this->custom_post_type();
-        # flush rewrite rules
-        flush_rewrite_rules();
-    }
+        function custom_post_type() {
+            register_post_type( 'book', [ 'label' => 'Books', 'public' => true ] );
+        }
 
-    function deactivate() {
-        # flush rewrite rules
-        flush_rewrite_rules();
+        function enqueue() {
+            // enqueue all style and script
+            wp_enqueue_style( 'mypluginstyle', plugins_url( '/assets/mystyle.css', __FILE__ ) );
+            wp_enqueue_script( 'mypluginscript', plugins_url( '/assets/myscript.js', __FILE__ ) );
+        }
     }
-
-    function custom_post_type() {
-        register_post_type( 'book', [ 'label' => 'Books', 'public' => true ] );
-    }
-
-    function enqueue() {
-        // enqueue all style and script
-        wp_enqueue_style( 'mypluginstyle', plugins_url( '/assets/mystyle.css', __FILE__ ) );
-        wp_enqueue_script( 'mypluginscript', plugins_url( '/assets/myscript.js', __FILE__ ) );
-    }
-}
-
-if (class_exists( 'SasbanPlugin' )) {
-    $sasbanPlugin = new SasbanPlugin();
-    $sasbanPlugin->register();
+    
+    // $sasbanPlugin = new SasbanPlugin();
+    // $sasbanPlugin->register();
 
     // activation
-    register_activation_hook( __FILE__, array( $sasbanPlugin, 'activate' ) );
+    require_once plugin_dir_path( __FILE__ ) . 'inc/Activate.php';
+    register_activation_hook( __FILE__, array( 'Activate' , 'activateThis' ) );
 
     // deactivation
-    register_deactivation_hook( __FILE__, array( $sasbanPlugin, 'deactivate' ) );
+    require_once plugin_dir_path( __FILE__ ) . 'inc/Deactivate.php';
+    register_deactivation_hook( __FILE__, array( 'Deactivate' , 'deactivateThis' ) );
 }
