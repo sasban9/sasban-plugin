@@ -1,1 +1,3 @@
-<h1>Sasban Plugin</h1>
+<div class="wrap">
+    <h1 class="wp-heading-inline">Sasban Plugin</h1>
+</div>
