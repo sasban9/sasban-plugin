@@ -14,6 +14,8 @@ class Admin extends BaseController
 
     public $pages = array();
 
+    public $subpages = array();
+
     public function __construct() {
         $this->settings = new SettingsApi();
 
@@ -22,19 +24,37 @@ class Admin extends BaseController
                 'page_title' => 'Sasban Plugin', 
                 'menu_title' => 'Sasban', 
                 'capability' => 'manage_options', 
-                'menu_slug' => 'ext_plugin', 
+                'menu_slug' => 'sasban_plugin', 
                 'callback' => function() { echo '<h1>Sasban Plugin (from callback)</h1>'; }, 
                 'icon_url' => 'dashicons-airplane', 
                 'position' => 110
             ),
+        );
+
+        $this->subpages = array(
             array(
-                'page_title' => 'Text Plugin', 
-                'menu_title' => 'Text Sasban', 
+                'parent_slug' => 'sasban_plugin', 
+                'page_title' => 'Custom Post Types', 
+                'menu_title' => 'CPT', 
                 'capability' => 'manage_options', 
-                'menu_slug' => 'sasban_plugin', 
-                'callback' => function() { echo '<h1>TEXT Plugin (from cb)</h1>'; }, 
-                'icon_url' => 'dashicons-external', 
-                'position' => 15
+                'menu_slug' => 'sasban_cpt', 
+                'callback' => function() { echo '<h1>Sasban CPT Manager</h1>'; },
+            ),
+            array(
+                'parent_slug' => 'sasban_plugin', 
+                'page_title' => 'Custom Taxonomies', 
+                'menu_title' => 'Taxonomies', 
+                'capability' => 'manage_options', 
+                'menu_slug' => 'sasban_taxonomies', 
+                'callback' => function() { echo '<h1>Sasban Taxonomies Manager</h1>'; },
+            ),
+            array(
+                'parent_slug' => 'sasban_plugin', 
+                'page_title' => 'Custom Widgets', 
+                'menu_title' => 'Widgets', 
+                'capability' => 'manage_options', 
+                'menu_slug' => 'sasban_widgets', 
+                'callback' => function() { echo '<h1>Sasban Widgets Manager</h1>'; },
             ),
         );
     }
@@ -44,7 +64,7 @@ class Admin extends BaseController
 
         // add_action( 'admin_menu', array( $this, 'add_admin_pages' ) );
 
-        $this->settings->addPages($this->pages)->register();
+        $this->settings->addPages($this->pages)->withSubPage('Dashboard')->addSubPages($this->subpages)->register();
 
         // add_filter( "plugin_action_links_$this->plugin", array( $this, 'settings_link' ) );
     }
