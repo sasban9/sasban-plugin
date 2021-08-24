@@ -7,6 +7,7 @@ namespace Inc\Pages;
 
 use \Inc\Base\BaseController;
 use \Inc\Api\SettingsApi;
+use \Inc\Api\Callbacks\AdminCallbacks;
 
 class Admin extends BaseController
 {
@@ -16,21 +17,34 @@ class Admin extends BaseController
 
     public $subpages = array();
 
-    public function __construct() {
+    public function register() 
+    {
         $this->settings = new SettingsApi();
+        $this->callbacks = new AdminCallbacks();
 
+        $this->setPages();
+        $this->setSubpages();
+
+        $this->settings->addPages($this->pages)->withSubPage('Dashboard')->addSubPages($this->subpages)->register();
+    }
+
+    public function setPages()
+    {
         $this->pages = array(
             array(
                 'page_title' => 'Sasban Plugin', 
                 'menu_title' => 'Sasban', 
                 'capability' => 'manage_options', 
                 'menu_slug' => 'sasban_plugin', 
-                'callback' => function() { echo '<h1>Sasban Plugin (from callback)</h1>'; }, 
+                'callback' => array($this->callbacks, 'adminDashboard'), 
                 'icon_url' => 'dashicons-airplane', 
                 'position' => 110
             ),
         );
+    }
 
+    public function setSubpages()
+    {
         $this->subpages = array(
             array(
                 'parent_slug' => 'sasban_plugin', 
@@ -57,15 +71,5 @@ class Admin extends BaseController
                 'callback' => function() { echo '<h1>Sasban Widgets Manager</h1>'; },
             ),
         );
-    }
-
-    public function register() {
-        # add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
-
-        // add_action( 'admin_menu', array( $this, 'add_admin_pages' ) );
-
-        $this->settings->addPages($this->pages)->withSubPage('Dashboard')->addSubPages($this->subpages)->register();
-
-        // add_filter( "plugin_action_links_$this->plugin", array( $this, 'settings_link' ) );
     }
 }
