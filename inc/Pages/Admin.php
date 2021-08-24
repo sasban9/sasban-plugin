@@ -25,6 +25,10 @@ class Admin extends BaseController
         $this->setPages();
         $this->setSubpages();
 
+        $this->setSettings();
+        $this->setSections();
+        $this->setFields();
+
         $this->settings->addPages($this->pages)->withSubPage('Dashboard')->addSubPages($this->subpages)->register();
     }
 
@@ -52,7 +56,7 @@ class Admin extends BaseController
                 'menu_title' => 'CPT', 
                 'capability' => 'manage_options', 
                 'menu_slug' => 'sasban_cpt', 
-                'callback' => function() { echo '<h1>Sasban CPT Manager</h1>'; },
+                'callback' => array($this->callbacks, 'adminCPT'),
             ),
             array(
                 'parent_slug' => 'sasban_plugin', 
@@ -60,7 +64,7 @@ class Admin extends BaseController
                 'menu_title' => 'Taxonomies', 
                 'capability' => 'manage_options', 
                 'menu_slug' => 'sasban_taxonomies', 
-                'callback' => function() { echo '<h1>Sasban Taxonomies Manager</h1>'; },
+                'callback' => array($this->callbacks, 'adminTaxonomy'),
             ),
             array(
                 'parent_slug' => 'sasban_plugin', 
@@ -68,8 +72,54 @@ class Admin extends BaseController
                 'menu_title' => 'Widgets', 
                 'capability' => 'manage_options', 
                 'menu_slug' => 'sasban_widgets', 
-                'callback' => function() { echo '<h1>Sasban Widgets Manager</h1>'; },
+                'callback' => array($this->callbacks, 'adminWidget'),
             ),
         );
+    }
+
+    public function setSettings()
+    {
+        $args = array(
+            array(
+                'option_group' => 'sasban_options_group',
+                'option_name' => 'text_example',
+                'callback' => array($this->callbacks, 'sasbanOptionsGroup'),
+            )
+        );
+
+        $this->settings->setSettings($args);
+    }
+
+    public function setSections()
+    {
+        $args = array(
+            array(
+                'id' => 'sasban_admin_index',
+                'title' => 'Settings',
+                'callback' => array($this->callbacks, 'sasbanAdminSection'),
+                'page' => 'sasban_plugin'
+            )
+        );
+
+        $this->settings->setSettings($args);
+    }
+
+    public function setFields()
+    {
+        $args = array(
+            array(
+                'id' => 'text_example',
+                'title' => 'Text Example',
+                'callback' => array($this->callbacks, 'sasbanAdminSection'),
+                'page' => 'sasban_plugin',
+                'section' => 'sasban_admin_index',
+                'args' => array(
+                    'label_for' => 'text_example',
+                    'class' => 'example-class'
+                )
+            )
+        );
+
+        $this->settings->setSettings($args);
     }
 }
