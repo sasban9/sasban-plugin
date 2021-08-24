@@ -14,15 +14,37 @@ License: GPLv2 or later
 Text Domain: sasban-plugin 
 */
 
+// if this file is called directly, die
 defined( 'ABSPATH' ) or die( 'Hey, you cant access this file, you silly human!' );
 
+// require composer autoload once
 if( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
     require_once dirname( __FILE__ ) . '/vendor/autoload.php';
 }
 
+// define plugin constants
 define( 'PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'PLUGIN', plugin_dir_path( __FILE__ ) );
+define( 'PLUGIN', plugin_basename( __FILE__ ) );
+
+use Inc\Base\Activate;
+use Inc\Base\Deactivate;
+
+/**
+ * code that runs on plugin activation
+ */
+function activate_sasban_plugin() {
+    Activate::activate();
+}
+register_activation_hook( __FILE__, 'activate_sasban_plugin' );
+
+/**
+ * code that runs on plugin deactivation
+ */
+function deactivate_sasban_plugin() {
+    Deactivate::deactivate();
+}
+register_deactivation_hook( __FILE__, 'deactivate_sasban_plugin' );
 
 if( class_exists( 'Inc\\Init' ) ) {
     Inc\Init::register_services();
