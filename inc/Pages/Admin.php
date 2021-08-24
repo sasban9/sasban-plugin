@@ -84,7 +84,11 @@ class Admin extends BaseController
                 'option_group' => 'sasban_options_group',
                 'option_name' => 'text_example',
                 'callback' => array($this->callbacks, 'sasbanOptionsGroup'),
-            )
+            ),
+            array(
+                'option_group' => 'sasban_options_group',
+                'option_name' => 'first_name',
+            ),
         );
 
         $this->settings->setSettings($args);
@@ -101,7 +105,7 @@ class Admin extends BaseController
             )
         );
 
-        $this->settings->setSettings($args);
+        $this->settings->setSections($args);
     }
 
     public function setFields()
@@ -110,16 +114,27 @@ class Admin extends BaseController
             array(
                 'id' => 'text_example',
                 'title' => 'Text Example',
-                'callback' => array($this->callbacks, 'sasbanAdminSection'),
+                'callback' => array($this->callbacks, 'sasbanTextExample'),
                 'page' => 'sasban_plugin',
                 'section' => 'sasban_admin_index',
                 'args' => array(
                     'label_for' => 'text_example',
                     'class' => 'example-class'
                 )
-            )
+            ),
+            array(
+                'id' => 'first_name',
+                'title' => 'First Name',
+                'callback' => array($this->callbacks, 'sasbanFirstName'),
+                'page' => 'sasban_plugin',
+                'section' => 'sasban_admin_index',
+                'args' => array(
+                    'label_for' => 'first_name',
+                    'class' => 'example-class'
+                )
+            ),
         );
 
-        $this->settings->setSettings($args);
+        $this->settings->setFields($args);
     }
 }

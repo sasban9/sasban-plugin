@@ -82,7 +82,7 @@ class SettingsApi
         return $this;
     }
 
-    public function setSections( array $secfieldstions ) 
+    public function setSections( array $sections ) 
     {
         $this->sections = $sections;
 
