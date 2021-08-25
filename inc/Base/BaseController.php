@@ -27,7 +27,7 @@ class BaseController
             'gallery_manager' => 'Activate Gallery Manager',
             'testimonial_manager' => 'Activate Testimonial Manager',
             'template_manager' => 'Activate Template Manager',
-            'login_manager' => 'Activate Login Manager',
+            'login_manager' => 'Activate AJAX Login/Signup',
             'membership_manager' => 'Activate Membership Manager',
             'chat_manager' => 'Activate Chat Manager',
         );
