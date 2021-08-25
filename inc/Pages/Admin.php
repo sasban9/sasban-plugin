@@ -8,10 +8,13 @@ namespace Inc\Pages;
 use \Inc\Base\BaseController;
 use \Inc\Api\SettingsApi;
 use \Inc\Api\Callbacks\AdminCallbacks;
+use \Inc\Api\Callbacks\ManagerCallbacks;
 
 class Admin extends BaseController
 {
     public $settings;
+    public $callbacks;
+    public $callbacks_mngr;
 
     public $pages = array();
 
@@ -21,6 +24,7 @@ class Admin extends BaseController
     {
         $this->settings = new SettingsApi();
         $this->callbacks = new AdminCallbacks();
+        $this->callbacks_mngr = new ManagerCallbacks();
 
         $this->setPages();
         $this->setSubpages();
@@ -81,13 +85,49 @@ class Admin extends BaseController
     {
         $args = array(
             array(
-                'option_group' => 'sasban_options_group',
-                'option_name' => 'text_example',
-                'callback' => array($this->callbacks, 'sasbanOptionsGroup'),
+                'option_group' => 'sasban_plugin_settings',
+                'option_name' => 'cpt_manager',
+                'callback' => array($this->callbacks_mngr, 'checkboxSanitize'),
             ),
             array(
-                'option_group' => 'sasban_options_group',
-                'option_name' => 'first_name',
+                'option_group' => 'sasban_plugin_settings',
+                'option_name' => 'taxonomy_manager',
+                'callback' => array($this->callbacks_mngr, 'checkboxSanitize'),
+            ),
+            array(
+                'option_group' => 'sasban_plugin_settings',
+                'option_name' => 'media_widget',
+                'callback' => array($this->callbacks_mngr, 'checkboxSanitize'),
+            ),
+            array(
+                'option_group' => 'sasban_plugin_settings',
+                'option_name' => 'gallery_manager',
+                'callback' => array($this->callbacks_mngr, 'checkboxSanitize'),
+            ),
+            array(
+                'option_group' => 'sasban_plugin_settings',
+                'option_name' => 'testimonial_manager',
+                'callback' => array($this->callbacks_mngr, 'checkboxSanitize'),
+            ),
+            array(
+                'option_group' => 'sasban_plugin_settings',
+                'option_name' => 'templates_manager',
+                'callback' => array($this->callbacks_mngr, 'checkboxSanitize'),
+            ),
+            array(
+                'option_group' => 'sasban_plugin_settings',
+                'option_name' => 'login_manager',
+                'callback' => array($this->callbacks_mngr, 'checkboxSanitize'),
+            ),
+            array(
+                'option_group' => 'sasban_plugin_settings',
+                'option_name' => 'membership_manager',
+                'callback' => array($this->callbacks_mngr, 'checkboxSanitize'),
+            ),
+            array(
+                'option_group' => 'sasban_plugin_settings',
+                'option_name' => 'chat_manager',
+                'callback' => array($this->callbacks_mngr, 'checkboxSanitize'),
             ),
         );
 
@@ -99,8 +139,8 @@ class Admin extends BaseController
         $args = array(
             array(
                 'id' => 'sasban_admin_index',
-                'title' => 'Settings',
-                'callback' => array($this->callbacks, 'sasbanAdminSection'),
+                'title' => 'Settings Manager',
+                'callback' => array($this->callbacks_mngr, 'adminSectionManager'),
                 'page' => 'sasban_plugin'
             )
         );
@@ -112,25 +152,102 @@ class Admin extends BaseController
     {
         $args = array(
             array(
-                'id' => 'text_example',
-                'title' => 'Text Example',
-                'callback' => array($this->callbacks, 'sasbanTextExample'),
+                'id' => 'cpt_manager',
+                'title' => 'Activate CPT Manager',
+                'callback' => array($this->callbacks_mngr, 'checkboxField'),
                 'page' => 'sasban_plugin',
                 'section' => 'sasban_admin_index',
                 'args' => array(
-                    'label_for' => 'text_example',
-                    'class' => 'example-class'
+                    'label_for' => 'cpt_manager',
+                    'classes' => 'ui-toggle',
                 )
             ),
             array(
-                'id' => 'first_name',
-                'title' => 'First Name',
-                'callback' => array($this->callbacks, 'sasbanFirstName'),
+                'id' => 'taxonomy_manager',
+                'title' => 'Activate Taxonomy Manager',
+                'callback' => array($this->callbacks_mngr, 'checkboxField'),
                 'page' => 'sasban_plugin',
                 'section' => 'sasban_admin_index',
                 'args' => array(
-                    'label_for' => 'first_name',
-                    'class' => 'example-class'
+                    'label_for' => 'taxonomy_manager',
+                    'classes' => 'ui-toggle',
+                )
+            ),
+            array(
+                'id' => 'media_widget',
+                'title' => 'Activate Media Widget',
+                'callback' => array($this->callbacks_mngr, 'checkboxField'),
+                'page' => 'sasban_plugin',
+                'section' => 'sasban_admin_index',
+                'args' => array(
+                    'label_for' => 'media_widget',
+                    'classes' => 'ui-toggle',
+                )
+            ),
+            array(
+                'id' => 'gallery_manager',
+                'title' => 'Activate Gallery Manager',
+                'callback' => array($this->callbacks_mngr, 'checkboxField'),
+                'page' => 'sasban_plugin',
+                'section' => 'sasban_admin_index',
+                'args' => array(
+                    'label_for' => 'gallery_manager',
+                    'classes' => 'ui-toggle',
+                )
+            ),
+            array(
+                'id' => 'testimonial_manager',
+                'title' => 'Activate Testimonial Manager',
+                'callback' => array($this->callbacks_mngr, 'checkboxField'),
+                'page' => 'sasban_plugin',
+                'section' => 'sasban_admin_index',
+                'args' => array(
+                    'label_for' => 'testimonial_manager',
+                    'classes' => 'ui-toggle',
+                )
+            ),
+            array(
+                'id' => 'template_manager',
+                'title' => 'Activate Template Manager',
+                'callback' => array($this->callbacks_mngr, 'checkboxField'),
+                'page' => 'sasban_plugin',
+                'section' => 'sasban_admin_index',
+                'args' => array(
+                    'label_for' => 'template_manager',
+                    'classes' => 'ui-toggle',
+                )
+            ),
+            array(
+                'id' => 'login_manager',
+                'title' => 'Activate Login Manager',
+                'callback' => array($this->callbacks_mngr, 'checkboxField'),
+                'page' => 'sasban_plugin',
+                'section' => 'sasban_admin_index',
+                'args' => array(
+                    'label_for' => 'login_manager',
+                    'classes' => 'ui-toggle',
+                )
+            ),
+            array(
+                'id' => 'membership_manager',
+                'title' => 'Activate Membership Manager',
+                'callback' => array($this->callbacks_mngr, 'checkboxField'),
+                'page' => 'sasban_plugin',
+                'section' => 'sasban_admin_index',
+                'args' => array(
+                    'label_for' => 'membership_manager',
+                    'classes' => 'ui-toggle',
+                )
+            ),
+            array(
+                'id' => 'chat_manager',
+                'title' => 'Activate Chat Manager',
+                'callback' => array($this->callbacks_mngr, 'checkboxField'),
+                'page' => 'sasban_plugin',
+                'section' => 'sasban_admin_index',
+                'args' => array(
+                    'label_for' => 'chat_manager',
+                    'classes' => 'ui-toggle',
                 )
             ),
         );
