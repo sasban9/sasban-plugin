@@ -83,15 +83,21 @@ class Admin extends BaseController
 
     public function setSettings()
     {
-        $args = array();
-
-        foreach ($this->managers as $manager => $title) {
-            $args[] = array(
+        $args = array(
+            array(
                 'option_group' => 'sasban_plugin_settings',
-                'option_name' => $manager,
+                'option_name' => 'sasban_plugin',
                 'callback' => array($this->callbacks_mngr, 'checkboxSanitize'),
-            );
-        }
+            )
+        );
+
+        // foreach ($this->managers as $manager => $title) {
+        //     $args[] = array(
+        //         'option_group' => 'sasban_plugin_settings',
+        //         'option_name' => $manager,
+        //         'callback' => array($this->callbacks_mngr, 'checkboxSanitize'),
+        //     );
+        // }
 
         $this->settings->setSettings($args);
     }
@@ -122,6 +128,7 @@ class Admin extends BaseController
                 'page' => 'sasban_plugin',
                 'section' => 'sasban_admin_index',
                 'args' => array(
+                    'option_name' => 'sasban_plugin',
                     'label_for' => $manager,
                     'classes' => 'ui-toggle',
                 )
