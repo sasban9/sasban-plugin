@@ -25,6 +25,6 @@ class ManagerCallbacks extends BaseController
         $name = $args['label_for'];
         $classes = $args['classes'];
         $checkbox = get_option($name);
-        echo '<input type="checkbox" name="'.$name.'" value="1" class="'.$classes.'" '.($checkbox ? 'checked' : '').' >';
+        echo '<div class="'.$classes.'"><input type="checkbox" id="'.$name.'" name="'.$name.'" value="1" '.($checkbox ? 'checked' : '').' ><label for="'.$name.'"><div></div></label></div>';
     }
 }
