@@ -10,11 +10,13 @@ class Activate
     public static function activate() {
         flush_rewrite_rules();
 
-        if(get_option('sasban_plugin')) {
-            return;
+        $default = array();
+        if(!get_option('sasban_plugin')) {
+            update_option('sasban_plugin', $default);
         }
 
-        $default = array();
-        update_option('sasban_plugin', $default);
+        if(!get_option('sasban_plugin_cpt')) {
+            update_option('sasban_plugin_cpt', $default);
+        }
     }
 }

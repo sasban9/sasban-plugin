@@ -18,6 +18,11 @@ class CptCallbacks
     {
         $output = get_option('sasban_plugin_cpt');
 
+        if(count($output) == 0) {
+            $output[$input['post_type']] = $input;
+            return $output;
+        }
+
         foreach ($output as $key => $value) {
             if($input['post_type'] === $key) {
                 $output[$type] = $input;
@@ -36,7 +41,7 @@ class CptCallbacks
         $placeholder = $args['placeholder'];
         $input = get_option($option_name);
 
-        echo '<input type="text" class="regular-text" id="'.$name.'" name="'.$option_name.'[test]['.$name.']" value="" placeholder="'.$placeholder.'">';
+        echo '<input type="text" class="regular-text" id="'.$name.'" name="'.$option_name.'['.$name.']" value="" placeholder="'.$placeholder.'" required>';
     }
 
     public function checkboxField($args)
@@ -47,6 +52,6 @@ class CptCallbacks
         $checkbox = get_option($option_name);
 
         $checked = isset($checkbox[$name]) ? ($checkbox[$name] ? true : false) : false;
-        echo '<div class="'.$classes.'"><input type="checkbox" id="'.$name.'" name="'.$option_name.'[test]['.$name.']" value="1" '.($checked?'checked':'').' ><label for="'.$name.'"><div></div></label></div>';
+        echo '<div class="'.$classes.'"><input type="checkbox" id="'.$name.'" name="'.$option_name.'['.$name.']" value="1" '.($checked?'checked':'').' ><label for="'.$name.'"><div></div></label></div>';
     }
 }

@@ -154,9 +154,16 @@ class CustomPostTypeController extends BaseController
 
     public function storeCustomPostTypes()
     {
-        $options = get_option('sasban_plugin_cpt');
+        // shorthand 
+        $options = get_option( 'sasban_plugin_cpt' ) ?: array();
+
+        // $keys = ['post_type', 'name', 'singular_name', 'plural_name', 'menu_name', 'name_admin_bar', 'archives', 'attributes', 'parent_item_colon', 'all_items', 'add_new_item', 'add_new', 'new_item', 'edit_item', 'update_item', 'view_item', 'view_items', 'search_items'];
 
         foreach ($options as $option) {
+            // foreach ($keys as $key) {
+            //     if(!isset($option[$key]))$option[$key] = false;
+            // }
+
             $this->custom_post_types[] = array(
 				'post_type'             => $option['post_type'],
 				'name'                  => $option['plural_name'],
@@ -191,14 +198,14 @@ class CustomPostTypeController extends BaseController
 				'supports'              => array( 'title', 'editor', 'thumbnail' ),
 				'taxonomies'            => array( 'category', 'post_tag' ),
 				'hierarchical'          => false,
-				'public'                => $option['public'],
+				'public'                => isset($option['public']) ?: false,
 				'show_ui'               => true,
 				'show_in_menu'          => true,
 				'menu_position'         => 5,
 				'show_in_admin_bar'     => true,
 				'show_in_nav_menus'     => true,
 				'can_export'            => true,
-				'has_archive'           => $option['has_archive'],
+				'has_archive'           => isset($option['has_archive']) ?: false,
 				'exclude_from_search'   => false,
 				'publicly_queryable'    => true,
 				'capability_type'       => 'post'
