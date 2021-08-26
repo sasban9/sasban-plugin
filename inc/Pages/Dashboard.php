@@ -60,15 +60,7 @@ class Dashboard extends BaseController
                 'callback' => array($this->callbacks_mngr, 'checkboxSanitize'),
             )
         );
-
-        // foreach ($this->managers as $manager => $title) {
-        //     $args[] = array(
-        //         'option_group' => 'sasban_plugin_settings',
-        //         'option_name' => $manager,
-        //         'callback' => array($this->callbacks_mngr, 'checkboxSanitize'),
-        //     );
-        // }
-
+        
         $this->settings->setSettings($args);
     }
 
