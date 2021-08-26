@@ -18,6 +18,11 @@ class CptCallbacks
     {
         $output = get_option('sasban_plugin_cpt');
 
+        if(isset($_POST['remove'])) {
+            unset($output[$_POST['remove']]);
+            return $output;
+        }
+
         if(count($output) == 0) {
             $output[$input['post_type']] = $input;
             return $output;
