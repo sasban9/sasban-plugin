@@ -1,7 +1,7 @@
 <h1>Sasban Taxonomy Manager</h1>
 <div class="wrap">
     <?php settings_errors(); ?>
-    <?php $active = isset($_POST['edit_taxonomy']) ? 'active' : ''; ?>
+    <?php $active = isset($_POST['taxonomy']) ? 'active' : ''; ?>
 
     <ul class="nav nav-tabs">
         <li class="<?php echo str_replace($active, '', 'active'); ?>"><a href="#tab-1">Your Custom Taxonomies</a></li>
@@ -15,32 +15,31 @@
 
             <?php
                 // shorthand 
-                // $options = get_option( 'sasban_plugin_cpt' ) ?: array();
+                $options = get_option( 'sasban_plugin_tax' ) ?: array();
 
-				// echo '<table class="cpt-table"><tr><th>ID</th><th>Singular Name</th><th>Plural Name</th><th class="text-center">Public</th><th class="text-center">Archive</th><th class="text-center">Actions</th></tr>';
+				echo '<table class="cpt-table"><tr><th>ID</th><th>Singular Name</th><th class="text-center">Hierarchical</th><th class="text-center">Actions</th></tr>';
 
-				// foreach ($options as $option) {
-				// 	$public = isset($option['public']) ? "TRUE" : "FALSE";
-				// 	$archive = isset($option['has_archive']) ? "TRUE" : "FALSE";
+				foreach ($options as $option) {
+					$hierarchical = isset($option['hierarchical']) ? "TRUE" : "FALSE";
+					
+					echo "<tr><td>{$option['taxonomy']}</td><td>{$option['singular_name']}</td><td class=\"text-center\">{$hierarchical}</td><td class=\"text-center\">";
 
-				// 	echo "<tr><td>{$option['post_type']}</td><td>{$option['singular_name']}</td><td>{$option['plural_name']}</td><td class=\"text-center\">{$public}</td><td class=\"text-center\">{$archive}</td><td class=\"text-center\">";
-
-                //     echo '<form method="POST" action="" class="inline-block">';
-                //     echo '<input type="hidden" name="edit_post" value="'.$option['post_type'].'">';
-                //     submit_button('Edit', 'primary small', 'submit', false);
-                //     echo '</form> ';
+                    echo '<form method="POST" action="" class="inline-block">';
+                    echo '<input type="hidden" name="edit_post" value="'.$option['taxonomy'].'">';
+                    submit_button('Edit', 'primary small', 'submit', false);
+                    echo '</form> ';
 
 
-                //     echo '<form method="POST" action="options.php" class="inline-block">';
-                //     settings_fields('sasban_plugin_cpt_settings');
-                //     echo '<input type="hidden" name="remove" value="'.$option['post_type'].'">';
-                //     submit_button('Delete', 'delete small', 'submit', false, array(
-                //         'onclick' => 'return confirm("Are you sure you want to delete this Custom Post Type? \nThe data associated with it will not be deleted.");'
-                //     ));
-                //     echo '</form></td></tr>';
-				// }
+                    echo '<form method="POST" action="options.php" class="inline-block">';
+                    settings_fields('sasban_plugin_cpt_settings');
+                    echo '<input type="hidden" name="remove" value="'.$option['taxonomy'].'">';
+                    submit_button('Delete', 'delete small', 'submit', false, array(
+                        'onclick' => 'return confirm("Are you sure you want to delete this Custom Post Type? \nThe data associated with it will not be deleted.");'
+                    ));
+                    echo '</form></td></tr>';
+				}
 
-				// echo '</table>';
+				echo '</table>';
             ?>
         </div>
 
