@@ -18,5 +18,9 @@ class Activate
         if(!get_option('sasban_plugin_cpt')) {
             update_option('sasban_plugin_cpt', $default);
         }
+
+        if(!get_option('sasban_plugin_tax')) {
+            update_option('sasban_plugin_tax', $default);
+        }
     }
 }
